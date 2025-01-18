@@ -74,7 +74,7 @@ module.exports = function (app) {
       //json res format same as .get
 		
 		if (!comment) {
-			return res.status(400).send('missing required field comment')
+			return res.send('missing required field comment')
 		}
 
 		try {
@@ -96,7 +96,7 @@ module.exports = function (app) {
         //if successful response will be 'delete successful'
 
 		try {
-			let book = await Book.deleteOne({_id: bookid});
+			let book = await Book.findOneAndDelete({_id: bookid});
 
 			if (!book) {
 				return res.status(400).send('no book exists')
