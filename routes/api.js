@@ -62,21 +62,53 @@ module.exports = function (app) {
 
 		} catch (err) {
 
-			return res.status(500).send('server error')
+			return res.status(500).send('no book exists')
 
 		}
 
     })
     
-    .post(function(req, res){
-      let bookid = req.params.id;
-      let comment = req.body.comment;
+    .post(async (req, res) => {
+      	let bookid = req.params.id;
+      	let comment = req.body.comment;
       //json res format same as .get
+		
+		if (!comment) {
+			return res.status(400).send('missing required field comment')
+		}
+
+		try {
+			let book = await Book.findOneAndUpdate({_id: bookid}, { $push: {comments: comment} }, { new: true} )
+			
+			if (!book) {
+				return res.send('no book exists')
+			}
+
+			return res.status(200).json(book)
+
+		} catch {
+			return res.send('no book exists')
+		}
     })
     
-    .delete(function(req, res){
-      let bookid = req.params.id;
-      //if successful response will be 'delete successful'
+    .delete(async(req, res) => {
+        let bookid = req.params.id;
+        //if successful response will be 'delete successful'
+
+		try {
+			let book = await Book.deleteOne({_id: bookid});
+
+			if (!book) {
+				return res.status(400).send('no book exists')
+			}
+
+			return res.send('delete successful')
+
+		} catch {
+
+			return res.status(500).send('server error')
+			
+		}
     });
   
 };
