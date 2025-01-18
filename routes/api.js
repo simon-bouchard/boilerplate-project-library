@@ -99,7 +99,7 @@ module.exports = function (app) {
 			let book = await Book.findOneAndDelete({_id: bookid});
 
 			if (!book) {
-				return res.status(400).send('no book exists')
+				return res.send('no book exists')
 			}
 
 			return res.send('delete successful')
