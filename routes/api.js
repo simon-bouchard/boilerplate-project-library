@@ -116,7 +116,7 @@ module.exports = function (app) {
 
 		} catch {
 
-			return res.stat)us(500).send('server error')
+			return res.status(500).send('server error')
 			
 		}
     });
