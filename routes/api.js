@@ -40,8 +40,18 @@ module.exports = function (app) {
 		return res.json(book)
     })
     
-    .delete(function(req, res){
-      //if successful response will be 'complete delete successful'
+    .delete(async(req, res) => {
+      	//if successful response will be 'complete delete successful'
+		
+		try {
+			await Book.deleteMany()
+
+			return res.status(200).send('complete delete successful')
+
+		} catch (err) {
+			return res.json({result: 'error delete the files', error: err})
+		}
+
     });
 
 
@@ -106,7 +116,7 @@ module.exports = function (app) {
 
 		} catch {
 
-			return res.status(500).send('server error')
+			return res.stat)us(500).send('server error')
 			
 		}
     });
